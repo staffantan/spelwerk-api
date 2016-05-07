@@ -38,12 +38,14 @@ APIServer.prototype.configure = function(connection) {
     var router = express.Router();
 
     app.use('/', router);
-    var User = new model.User(router, connection);
     var Character = new model.Character(router, connection);
-    var SocialStatus = new model.SocialStatus(router, connection);
+    var Doctrine = new model.Doctrine(router, connection);
     var GameModule = new model.GameModule(router, connection);
     var Manifestation = new model.Manifestation(router, connection);
+    var Skill = new model.Skill(router, connection);
+    var SocialStatus = new model.SocialStatus(router, connection);
     var Species = new model.Species(router, connection);
+    var User = new model.User(router, connection);
 
     self.setup();
 };
