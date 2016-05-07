@@ -7,7 +7,9 @@ function Person(router, connection) {
 
 Person.prototype.routes = function(router, connection) {
     router.get('/person', function(request, response) {
-        var query = 'SELECT person.id AS id, person.firstname, person.lastname, person.nickname, person.gender, person.occupation, person.description AS description, person.finance, module.name AS module, species.name AS species FROM person LEFT JOIN module ON person.in_module=module.id LEFT JOIN species ON person.is_species=species.id';
+        var query = 'SELECT person.*, module.name AS module, species.name AS species FROM person ' +
+            'LEFT JOIN module ON person.in_module=module.id ' +
+            'LEFT JOIN species ON person.is_species=species.id';
 
         connection.query(query, function(error, rows) {
             if(error) {
@@ -21,7 +23,10 @@ Person.prototype.routes = function(router, connection) {
     router.get('/person/:id', function(request, response) {
         var uid = request.params.id;
 
-        var query = 'SELECT person.id AS id, person.firstname, person.lastname, person.nickname, person.gender, person.occupation, person.description AS description, person.finance, module.name AS module, species.name AS species FROM person LEFT JOIN module ON person.in_module=module.id LEFT JOIN species ON person.is_species=species.id WHERE person.id=?';
+        var query = 'SELECT person.*, module.name AS module, species.name AS species FROM person ' +
+            'LEFT JOIN module ON person.in_module=module.id ' +
+            'LEFT JOIN species ON person.is_species=species.id ' +
+            'WHERE person.id=?';
         var table = [uid];
         query = mysql.format(query, table);
 
@@ -58,24 +63,60 @@ Person.prototype.routes = function(router, connection) {
         });
     });
 
-    router.put('/person/:id/names', function(request, response) {
-        var uid = request.params.id;
-        var fnm = request.body.firstname;
-        var lnm = request.body.lastname;
-        var nnm = request.body.nickname;
+    /** NAMES */
 
-        var query = 'UPDATE person SET firstname = ?, lastname = ?, nickname = ? WHERE id = ?';
-        var table = [fnm,lnm,nnm,uid];
+    router.put('/person/:id/firstname', function(request, response) {
+        var uid = request.params.id;
+        var value = request.body.firstname;
+
+        var query = 'UPDATE person SET firstname = ? WHERE id = ?';
+        var table = [value,uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
             if (error) {
                 response.status(500).send({error: true, message: 'error executing mysql query.', details: error});
             } else {
-                response.status(201).send({error: false, message: 'success.', result: {firstname: fnm, lastname: lnm, nickname: nnm}});
+                response.status(201).send({error: false, message: 'success.', result: {firstname: value}});
             }
         });
     });
+
+    router.put('/person/:id/lastname', function(request, response) {
+        var uid = request.params.id;
+        var value = request.body.lastname;
+
+        var query = 'UPDATE person SET lastname = ? WHERE id = ?';
+        var table = [value,uid];
+        query = mysql.format(query, table);
+
+        connection.query(query, function(error) {
+            if (error) {
+                response.status(500).send({error: true, message: 'error executing mysql query.', details: error});
+            } else {
+                response.status(201).send({error: false, message: 'success.', result: {lastname: value}});
+            }
+        });
+    });
+
+    router.put('/person/:id/nickname', function(request, response) {
+        var uid = request.params.id;
+        var value = request.body.nickname;
+
+        var query = 'UPDATE person SET nickname = ? WHERE id = ?';
+        var table = [value,uid];
+        query = mysql.format(query, table);
+
+        connection.query(query, function(error) {
+            if (error) {
+                response.status(500).send({error: true, message: 'error executing mysql query.', details: error});
+            } else {
+                response.status(201).send({error: false, message: 'success.', result: {nickname: value}});
+            }
+        });
+    });
+
+    /** DESCRIPTION */
 
     router.put('/person/:id/description', function(request, response) {
         var uid = request.params.id;
@@ -127,6 +168,8 @@ Person.prototype.routes = function(router, connection) {
             }
         });
     });
+
+    /** DELETION */
 
     router.delete('/person/:id', function(request, response) {
         var uid = request.params.id;
