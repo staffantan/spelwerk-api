@@ -8,9 +8,7 @@ function User(router, connection) {
 
 User.prototype.routes = function(router, connection) {
     router.get('/user', function (request, response) {
-        var query = 'SELECT ??,??,??,?? FROM ??';
-        var table = ['id','email','firstname','lastname','user'];
-        query = mysql.format(query, table);
+        var query = 'SELECT id, email, firstname, lastname FROM user';
 
         connection.query(query, function(error, rows) {
             if(error) {
@@ -24,8 +22,8 @@ User.prototype.routes = function(router, connection) {
     router.get('/user/:id', function(request, response) {
         var uid = request.params.id;
 
-        var query = 'SELECT ??,??,?? FROM ?? WHERE ?? = ?';
-        var table = ['email','firstname','lastname','user','id',uid];
+        var query = 'SELECT email, firstname, lastname FROM user WHERE id = ?';
+        var table = [uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error, rows) {
@@ -43,8 +41,8 @@ User.prototype.routes = function(router, connection) {
         var fnm = request.body.firstname;
         var lnm = request.body.lastname;
 
-        var query = 'INSERT INTO ??(??,??,??,??) VALUES (?,?,?,?)';
-        var table = ['user','email','password','firstname','lastname',usr,psw,fnm,lnm];
+        var query = 'INSERT INTO user(email,password,firstname,lastname) VALUES (?,?,?,?)';
+        var table = [usr,psw,fnm,lnm];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -61,8 +59,8 @@ User.prototype.routes = function(router, connection) {
         var fnm = request.body.firstname;
         var lnm = request.body.lastname;
 
-        var query = 'UPDATE ?? SET ?? = ?, ?? = ? WHERE ?? = ?';
-        var table = ['user','firstname',fnm,'lastname',lnm,'id',uid];
+        var query = 'UPDATE user SET firstname = ?, lastname = ? WHERE id = ?';
+        var table = [fnm,lnm,uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -78,12 +76,8 @@ User.prototype.routes = function(router, connection) {
         var uid = request.params.id;
         var usr = request.body.email;
 
-        if (!usr) {
-            response.status(403).send({error: true, message: 'not allowed to set email as null.'});
-        }
-
-        var query = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
-        var table = ['user','email',usr,'id',uid];
+        var query = 'UPDATE user SET email = ? WHERE id = ?';
+        var table = [usr,uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -99,12 +93,8 @@ User.prototype.routes = function(router, connection) {
         var uid = request.params.id;
         var psw = request.body.password;
 
-        if (!psw) {
-            response.status(403).send({error: true, message: 'not allowed to set password as null.'});
-        }
-
-        var query = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
-        var table = ['user','password',psw,'id',uid];
+        var query = 'UPDATE user SET password = ? WHERE id = ?';
+        var table = [psw,uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -119,8 +109,8 @@ User.prototype.routes = function(router, connection) {
     router.delete('/user/:id', function(request, response) {
         var uid = request.params.id;
 
-        var query = 'DELETE from ?? WHERE ?? = ?';
-        var table = ['user','id',uid];
+        var query = 'DELETE from user WHERE id = ?';
+        var table = [uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {

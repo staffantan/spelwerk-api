@@ -7,9 +7,7 @@ function Species(router, connection) {
 
 Species.prototype.routes = function(router, connection) {
     router.get('/species', function(request, response) {
-        var query = 'SELECT * FROM ??';
-        var table = ['species'];
-        query = mysql.format(query, table);
+        var query = 'SELECT * FROM species';
 
         connection.query(query, function(error, rows) {
             if(error) {
@@ -23,8 +21,8 @@ Species.prototype.routes = function(router, connection) {
     router.get('/species/:id', function(request, response) {
         var uid = request.params.id;
 
-        var query = 'SELECT * FROM ?? WHERE ?? = ?';
-        var table = ['species','id',uid];
+        var query = 'SELECT * FROM species WHERE id = ?';
+        var table = [uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error, rows) {
@@ -47,8 +45,8 @@ Species.prototype.routes = function(router, connection) {
         var sta = request.body.stamina;
         var pot = request.body.potential;
 
-        var query = 'INSERT INTO ??(??,??,??,??,??,??,??,??,??) VALUES (?,?,?,?,?,?,?,?,?)';
-        var table = ['species','name','description','speed','damage','initiative','tolerance','resilience','stamina','potential',nme,dsc,spd,dmg,ini,tol,res,sta,pot];
+        var query = 'INSERT INTO species(name,description,speed,damage,initiative,tolerance,resilience,stamina,potential) VALUES (?,?,?,?,?,?,?,?,?)';
+        var table = [nme,dsc,spd,dmg,ini,tol,res,sta,pot];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -64,8 +62,8 @@ Species.prototype.routes = function(router, connection) {
         var uid = request.params.id;
         var nme = request.body.name;
 
-        var query = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
-        var table = ['species','name',nme,'id',uid];
+        var query = 'UPDATE species SET name = ? WHERE id = ?';
+        var table = [nme,uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -81,8 +79,8 @@ Species.prototype.routes = function(router, connection) {
         var uid = request.params.id;
         var dsc = request.body.description;
 
-        var query = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
-        var table = ['species','description',dsc,'id',uid];
+        var query = 'UPDATE species SET description = ? WHERE id = ?';
+        var table = [dsc,uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -104,8 +102,8 @@ Species.prototype.routes = function(router, connection) {
         var sta = request.body.stamina;
         var pot = request.body.potential;
 
-        var query = 'UPDATE ?? SET ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?';
-        var table = ['species','speed',spd,'damage',dmg,'initiative',ini,'tolerance',tol,'resilience',res,'stamina',sta,'potential',pot,'id',uid];
+        var query = 'UPDATE species SET speed = ?, damage = ?, initiative = ?, tolerance = ?, resilience = ?, stamina = ?, potential = ? WHERE id = ?';
+        var table = [spd,dmg,ini,tol,res,sta,pot,uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -120,8 +118,8 @@ Species.prototype.routes = function(router, connection) {
     router.delete('/species/:id', function(request, response) {
         var uid = request.params.id;
 
-        var query = 'DELETE from ?? WHERE ?? = ?';
-        var table = ['species','id',uid];
+        var query = 'DELETE from species WHERE id = ?';
+        var table = [uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {

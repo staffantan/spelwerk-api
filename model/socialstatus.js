@@ -7,9 +7,7 @@ function SocialStatus(router, connection) {
 
 SocialStatus.prototype.routes = function(router, connection) {
     router.get('/socialstatus', function(request, response) {
-        var query = 'SELECT * FROM ??';
-        var table = ['socialstatus'];
-        query = mysql.format(query, table);
+        var query = 'SELECT * FROM socialstatus';
 
         connection.query(query, function(error, rows) {
             if(error) {
@@ -23,8 +21,8 @@ SocialStatus.prototype.routes = function(router, connection) {
     router.get('/socialstatus/:id', function(request, response) {
         var uid = request.params.id;
 
-        var query = 'SELECT * FROM ?? WHERE ?? = ?';
-        var table = ['socialstatus','id',uid];
+        var query = 'SELECT * FROM socialstatus WHERE id = ?';
+        var table = [uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error, rows) {
@@ -41,8 +39,8 @@ SocialStatus.prototype.routes = function(router, connection) {
         var dsc = request.body.description;
         var fin = request.body.finance;
 
-        var query = 'INSERT INTO ??(??,??,??) VALUES (?,?,?)';
-        var table = ['socialstatus','name','description','finance',nme,dsc,fin];
+        var query = 'INSERT INTO socialstatus(name,description,finance) VALUES (?,?,?)';
+        var table = [nme,dsc,fin];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -58,8 +56,8 @@ SocialStatus.prototype.routes = function(router, connection) {
         var uid = request.params.id;
         var nme = request.body.name;
 
-        var query = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
-        var table = ['socialstatus','name',nme,'id',uid];
+        var query = 'UPDATE socialstatus SET name = ? WHERE id = ?';
+        var table = [nme,uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -75,8 +73,8 @@ SocialStatus.prototype.routes = function(router, connection) {
         var uid = request.params.id;
         var dsc = request.body.description;
 
-        var query = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
-        var table = ['socialstatus','description',dsc,'id',uid];
+        var query = 'UPDATE socialstatus SET description = ? WHERE id = ?';
+        var table = [dsc,uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -92,8 +90,8 @@ SocialStatus.prototype.routes = function(router, connection) {
         var uid = request.params.id;
         var fin = request.body.finance;
 
-        var query = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
-        var table = ['socialstatus','finance',fin,'id',uid];
+        var query = 'UPDATE socialstatus SET finance = ? WHERE id = ?';
+        var table = [fin,uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -108,8 +106,8 @@ SocialStatus.prototype.routes = function(router, connection) {
     router.delete('/socialstatus/:id', function(request, response) {
         var uid = request.params.id;
 
-        var query = 'DELETE from ?? WHERE ?? = ?';
-        var table = ['socialstatus','id',uid];
+        var query = 'DELETE from socialstatus WHERE id = ?';
+        var table = [uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {

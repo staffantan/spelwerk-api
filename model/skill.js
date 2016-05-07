@@ -7,9 +7,7 @@ function Skill(router, connection) {
 
 Skill.prototype.routes = function(router, connection) {
     router.get('/skill', function(request, response) {
-        var query = 'SELECT * FROM ??';
-        var table = ['skill'];
-        query = mysql.format(query, table);
+        var query = 'SELECT * FROM skill';
 
         connection.query(query, function(error, rows) {
             if(error) {
@@ -23,8 +21,8 @@ Skill.prototype.routes = function(router, connection) {
     router.get('/skill/:id', function(request, response) {
         var uid = request.params.id;
 
-        var query = 'SELECT * FROM ?? WHERE ?? = ?';
-        var table = ['skill','id',uid];
+        var query = 'SELECT * FROM skill WHERE id = ?';
+        var table = [uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error, rows) {
@@ -40,8 +38,8 @@ Skill.prototype.routes = function(router, connection) {
         var nme = request.body.name;
         var dsc = request.body.description;
 
-        var query = 'INSERT INTO ??(??,??) VALUES (?,?)';
-        var table = ['skill','name','description',nme,dsc];
+        var query = 'INSERT INTO skill(name,description) VALUES (?,?)';
+        var table = [nme,dsc];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -57,8 +55,8 @@ Skill.prototype.routes = function(router, connection) {
         var uid = request.params.id;
         var nme = request.body.name;
 
-        var query = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
-        var table = ['skill','name',nme,'id',uid];
+        var query = 'UPDATE skill SET name = ? WHERE id = ?';
+        var table = [nme,uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -74,8 +72,8 @@ Skill.prototype.routes = function(router, connection) {
         var uid = request.params.id;
         var dsc = request.body.description;
 
-        var query = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
-        var table = ['skill','description',dsc,'id',uid];
+        var query = 'UPDATE skill SET description = ? WHERE id = ?';
+        var table = [dsc,uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -90,8 +88,8 @@ Skill.prototype.routes = function(router, connection) {
     router.delete('/skill/:id', function(request, response) {
         var uid = request.params.id;
 
-        var query = 'DELETE from ?? WHERE ?? = ?';
-        var table = ['skill','id',uid];
+        var query = 'DELETE from skill WHERE id = ?';
+        var table = [uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {

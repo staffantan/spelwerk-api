@@ -7,9 +7,7 @@ function Manifestation(router, connection) {
 
 Manifestation.prototype.routes = function(router, connection) {
     router.get('/manifestation', function(request, response) {
-        var query = 'SELECT * FROM ??';
-        var table = ['manifestation'];
-        query = mysql.format(query, table);
+        var query = 'SELECT * FROM manifestation';
 
         connection.query(query, function(error, rows) {
             if(error) {
@@ -23,8 +21,8 @@ Manifestation.prototype.routes = function(router, connection) {
     router.get('/manifestation/:id', function(request, response) {
         var uid = request.params.id;
 
-        var query = 'SELECT * FROM ?? WHERE ?? = ?';
-        var table = ['manifestation','id',uid];
+        var query = 'SELECT * FROM manifestation WHERE id = ?';
+        var table = [uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error, rows) {
@@ -40,8 +38,8 @@ Manifestation.prototype.routes = function(router, connection) {
         var nme = request.body.name;
         var dsc = request.body.description;
 
-        var query = 'INSERT INTO ??(??,??) VALUES (?,?)';
-        var table = ['manifestation','name','description',nme,dsc];
+        var query = 'INSERT INTO manifestation(name,description) VALUES (?,?)';
+        var table = [nme,dsc];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -57,8 +55,8 @@ Manifestation.prototype.routes = function(router, connection) {
         var uid = request.params.id;
         var nme = request.body.name;
 
-        var query = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
-        var table = ['manifestation','name',nme,'id',uid];
+        var query = 'UPDATE manifestation SET name = ? WHERE id = ?';
+        var table = [nme,uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -74,8 +72,8 @@ Manifestation.prototype.routes = function(router, connection) {
         var uid = request.params.id;
         var dsc = request.body.description;
 
-        var query = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
-        var table = ['manifestation','description',dsc,'id',uid];
+        var query = 'UPDATE manifestation SET description = ? WHERE id = ?';
+        var table = [dsc,uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -90,8 +88,8 @@ Manifestation.prototype.routes = function(router, connection) {
     router.delete('/manifestation/:id', function(request, response) {
         var uid = request.params.id;
 
-        var query = 'DELETE from ?? WHERE ?? = ?';
-        var table = ['manifestation','id',uid];
+        var query = 'DELETE from manifestation WHERE id = ?';
+        var table = [uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
