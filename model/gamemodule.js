@@ -1,14 +1,14 @@
 var mysql = require('mysql');
 
-function SocialStatus(router, connection) {
+function GameModule(router, connection) {
     var self = this;
     self.routes(router, connection);
 }
 
-SocialStatus.prototype.routes = function(router, connection) {
-    router.get('/socialstatus', function(request, response) {
+GameModule.prototype.routes = function(router, connection) {
+    router.get('/module', function(request, response) {
         var query = 'SELECT * FROM ??';
-        var table = ['socialstatus'];
+        var table = ['module'];
         query = mysql.format(query, table);
 
         connection.query(query, function(error, rows) {
@@ -20,11 +20,11 @@ SocialStatus.prototype.routes = function(router, connection) {
         });
     });
 
-    router.get('/socialstatus/:id', function(request, response) {
+    router.get('/module/:id', function(request, response) {
         var uid = request.params.id;
 
         var query = 'SELECT * FROM ?? WHERE ?? = ?';
-        var table = ['socialstatus','id',uid];
+        var table = ['module','id',uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error, rows) {
@@ -36,30 +36,29 @@ SocialStatus.prototype.routes = function(router, connection) {
         });
     });
 
-    router.post('/socialstatus', function(request, response) {
+    router.post('/module', function(request, response) {
         var nme = request.body.name;
         var dsc = request.body.description;
-        var fin = request.body.finance;
 
-        var query = 'INSERT INTO ??(??,??,??) VALUES (?,?,?)';
-        var table = ['socialstatus','name','description','finance',nme,dsc,fin];
+        var query = 'INSERT INTO ??(??,??) VALUES (?,?)';
+        var table = ['module','name','description',nme,dsc];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
             if (error) {
                 response.status(500).send({error: true, message: 'error executing mysql query.', details: error});
             } else {
-                response.status(201).send({error: false, message: 'success.', result: {name: nme, description: dsc, finance: fin}});
+                response.status(201).send({error: false, message: 'success.', result: {name: nme, description: dsc}});
             }
         });
     });
 
-    router.put('/socialstatus/:id/name', function(request, response) {
+    router.put('/module/:id/name', function(request, response) {
         var uid = request.params.id;
         var nme = request.body.name;
 
         var query = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
-        var table = ['socialstatus','name',nme,'id',uid];
+        var table = ['module','name',nme,'id',uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -71,12 +70,12 @@ SocialStatus.prototype.routes = function(router, connection) {
         });
     });
 
-    router.put('/socialstatus/:id/description', function(request, response) {
+    router.put('/module/:id/description', function(request, response) {
         var uid = request.params.id;
         var dsc = request.body.description;
 
         var query = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
-        var table = ['socialstatus','description',dsc,'id',uid];
+        var table = ['module','description',dsc,'id',uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -88,28 +87,11 @@ SocialStatus.prototype.routes = function(router, connection) {
         });
     });
 
-    router.put('/socialstatus/:id/finance', function(request, response) {
-        var uid = request.params.id;
-        var fin = request.body.finance;
-
-        var query = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
-        var table = ['socialstatus','finance',fin,'id',uid];
-        query = mysql.format(query, table);
-
-        connection.query(query, function(error) {
-            if (error) {
-                response.status(500).send({error: true, message: 'error executing mysql query.', details: error});
-            } else {
-                response.status(201).send({error: false, message: 'success.', result: {finance: fin}});
-            }
-        });
-    });
-
-    router.delete('/socialstatus/:id', function(request, response) {
+    router.delete('/module/:id', function(request, response) {
         var uid = request.params.id;
 
         var query = 'DELETE from ?? WHERE ?? = ?';
-        var table = ['socialstatus','id',uid];
+        var table = ['module','id',uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -122,4 +104,4 @@ SocialStatus.prototype.routes = function(router, connection) {
     });
 };
 
-module.exports = SocialStatus;
+module.exports = GameModule;

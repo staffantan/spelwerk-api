@@ -6,7 +6,7 @@ function Character(router, connection) {
 }
 
 Character.prototype.routes = function(router, connection) {
-    router.get('/character', function (request, response) {
+    router.get('/character', function(request, response) {
         response.status(501).send({error: false, message: 'not implemented yet'});
     });
 
@@ -14,15 +14,15 @@ Character.prototype.routes = function(router, connection) {
         response.status(501).send({error: false, message: 'not implemented yet'});
     });
 
-    router.post('/character/', function (request, response) {
+    router.post('/character/', function(request, response) {
         response.status(501).send({error: false, message: 'not implemented yet'});
     });
 
-    router.put('/character/:id', function (request, response) {
+    router.put('/character/:id', function(request, response) {
         response.status(501).send({error: false, message: 'not implemented yet'});
     });
 
-    router.delete('/character/:id', function (request, response) {
+    router.delete('/character/:id', function(request, response) {
         response.status(501).send({error: false, message: 'not implemented yet'});
     });
 };

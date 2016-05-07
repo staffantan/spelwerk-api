@@ -1,14 +1,14 @@
 var mysql = require('mysql');
 
-function Module(router, connection) {
+function Manifestation(router, connection) {
     var self = this;
     self.routes(router, connection);
 }
 
-Module.prototype.routes = function(router, connection) {
-    router.get('/module', function (request, response) {
+Manifestation.prototype.routes = function(router, connection) {
+    router.get('/manifestation', function(request, response) {
         var query = 'SELECT * FROM ??';
-        var table = ['module'];
+        var table = ['manifestation'];
         query = mysql.format(query, table);
 
         connection.query(query, function(error, rows) {
@@ -20,11 +20,11 @@ Module.prototype.routes = function(router, connection) {
         });
     });
 
-    router.get('/module/:id', function(request, response) {
+    router.get('/manifestation/:id', function(request, response) {
         var uid = request.params.id;
 
         var query = 'SELECT * FROM ?? WHERE ?? = ?';
-        var table = ['module','id',uid];
+        var table = ['manifestation','id',uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error, rows) {
@@ -36,12 +36,12 @@ Module.prototype.routes = function(router, connection) {
         });
     });
 
-    router.post('/module', function (request, response) {
+    router.post('/manifestation', function(request, response) {
         var nme = request.body.name;
         var dsc = request.body.description;
 
         var query = 'INSERT INTO ??(??,??) VALUES (?,?)';
-        var table = ['module','name','description',nme,dsc];
+        var table = ['manifestation','name','description',nme,dsc];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -53,12 +53,12 @@ Module.prototype.routes = function(router, connection) {
         });
     });
 
-    router.put('/module/:id/name', function (request, response) {
+    router.put('/manifestation/:id/name', function(request, response) {
         var uid = request.params.id;
         var nme = request.body.name;
 
         var query = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
-        var table = ['module','name',nme,'id',uid];
+        var table = ['manifestation','name',nme,'id',uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -70,12 +70,12 @@ Module.prototype.routes = function(router, connection) {
         });
     });
 
-    router.put('/module/:id/description', function (request, response) {
+    router.put('/manifestation/:id/description', function(request, response) {
         var uid = request.params.id;
         var dsc = request.body.description;
 
         var query = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
-        var table = ['module','description',dsc,'id',uid];
+        var table = ['manifestation','description',dsc,'id',uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -87,11 +87,11 @@ Module.prototype.routes = function(router, connection) {
         });
     });
 
-    router.delete('/module/:id', function (request, response) {
+    router.delete('/manifestation/:id', function(request, response) {
         var uid = request.params.id;
 
         var query = 'DELETE from ?? WHERE ?? = ?';
-        var table = ['module','id',uid];
+        var table = ['manifestation','id',uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -104,4 +104,4 @@ Module.prototype.routes = function(router, connection) {
     });
 };
 
-module.exports = Module;
+module.exports = Manifestation;

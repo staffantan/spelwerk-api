@@ -1,14 +1,14 @@
 var mysql = require('mysql');
 
-function SocialStatus(router, connection) {
+function Species(router, connection) {
     var self = this;
     self.routes(router, connection);
 }
 
-SocialStatus.prototype.routes = function(router, connection) {
-    router.get('/socialstatus', function(request, response) {
+Species.prototype.routes = function(router, connection) {
+    router.get('/species', function(request, response) {
         var query = 'SELECT * FROM ??';
-        var table = ['socialstatus'];
+        var table = ['species'];
         query = mysql.format(query, table);
 
         connection.query(query, function(error, rows) {
@@ -20,11 +20,11 @@ SocialStatus.prototype.routes = function(router, connection) {
         });
     });
 
-    router.get('/socialstatus/:id', function(request, response) {
+    router.get('/species/:id', function(request, response) {
         var uid = request.params.id;
 
         var query = 'SELECT * FROM ?? WHERE ?? = ?';
-        var table = ['socialstatus','id',uid];
+        var table = ['species','id',uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error, rows) {
@@ -36,30 +36,36 @@ SocialStatus.prototype.routes = function(router, connection) {
         });
     });
 
-    router.post('/socialstatus', function(request, response) {
+    router.post('/species', function(request, response) {
         var nme = request.body.name;
         var dsc = request.body.description;
-        var fin = request.body.finance;
+        var spd = request.body.speed;
+        var dmg = request.body.damage;
+        var ini = request.body.initiative;
+        var tol = request.body.tolerance;
+        var res = request.body.resilience;
+        var sta = request.body.stamina;
+        var pot = request.body.potential;
 
-        var query = 'INSERT INTO ??(??,??,??) VALUES (?,?,?)';
-        var table = ['socialstatus','name','description','finance',nme,dsc,fin];
+        var query = 'INSERT INTO ??(??,??,??,??,??,??,??) VALUES (?,?,?,?,?,?,?)';
+        var table = ['species','name','description','speed','damage','initiative','tolerance','resilience','stamina','potential',nme,dsc,spd,dmg,ini,tol,res,sta,pot];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
             if (error) {
                 response.status(500).send({error: true, message: 'error executing mysql query.', details: error});
             } else {
-                response.status(201).send({error: false, message: 'success.', result: {name: nme, description: dsc, finance: fin}});
+                response.status(201).send({error: false, message: 'success.', result: {name: nme, description: dsc, speed: spd, damage: dmg, initiative: ini, tolerance: tol, resilience: res, stamina: sta, potential: pot}});
             }
         });
     });
 
-    router.put('/socialstatus/:id/name', function(request, response) {
+    router.put('/species/:id/name', function(request, response) {
         var uid = request.params.id;
         var nme = request.body.name;
 
         var query = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
-        var table = ['socialstatus','name',nme,'id',uid];
+        var table = ['species','name',nme,'id',uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -71,12 +77,12 @@ SocialStatus.prototype.routes = function(router, connection) {
         });
     });
 
-    router.put('/socialstatus/:id/description', function(request, response) {
+    router.put('/species/:id/description', function(request, response) {
         var uid = request.params.id;
         var dsc = request.body.description;
 
         var query = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
-        var table = ['socialstatus','description',dsc,'id',uid];
+        var table = ['species','description',dsc,'id',uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -88,28 +94,34 @@ SocialStatus.prototype.routes = function(router, connection) {
         });
     });
 
-    router.put('/socialstatus/:id/finance', function(request, response) {
+    router.put('/species/:id/attributes', function(request, response) {
         var uid = request.params.id;
-        var fin = request.body.finance;
+        var spd = request.body.speed;
+        var dmg = request.body.damage;
+        var ini = request.body.initiative;
+        var tol = request.body.tolerance;
+        var res = request.body.resilience;
+        var sta = request.body.stamina;
+        var pot = request.body.potential;
 
-        var query = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
-        var table = ['socialstatus','finance',fin,'id',uid];
+        var query = 'UPDATE ?? SET ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?';
+        var table = ['species','speed',spd,'damage',dmg,'initiative',ini,'tolerance',tol,'resilience',res,'stamina',sta,'potential',pot,'id',uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
             if (error) {
                 response.status(500).send({error: true, message: 'error executing mysql query.', details: error});
             } else {
-                response.status(201).send({error: false, message: 'success.', result: {finance: fin}});
+                response.status(201).send({error: false, message: 'success.', result: {speed: spd, damage: dmg, initiative: ini, tolerance: tol, resilience: res, stamina: sta, potential: pot}});
             }
         });
     });
 
-    router.delete('/socialstatus/:id', function(request, response) {
+    router.delete('/species/:id', function(request, response) {
         var uid = request.params.id;
 
         var query = 'DELETE from ?? WHERE ?? = ?';
-        var table = ['socialstatus','id',uid];
+        var table = ['species','id',uid];
         query = mysql.format(query, table);
 
         connection.query(query, function(error) {
@@ -122,4 +134,4 @@ SocialStatus.prototype.routes = function(router, connection) {
     });
 };
 
-module.exports = SocialStatus;
+module.exports = Species;

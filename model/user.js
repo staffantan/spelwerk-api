@@ -37,7 +37,7 @@ User.prototype.routes = function(router, connection) {
         });
     });
 
-    router.post('/user', function (request, response) {
+    router.post('/user', function(request, response) {
         var usr = request.body.email;
         var psw = request.body.password;
         var fnm = request.body.firstname;
@@ -56,7 +56,7 @@ User.prototype.routes = function(router, connection) {
         });
     });
 
-    router.put('/user/:id/names', function (request, response) {
+    router.put('/user/:id/names', function(request, response) {
         var uid = request.params.id;
         var fnm = request.body.firstname;
         var lnm = request.body.lastname;
@@ -74,7 +74,7 @@ User.prototype.routes = function(router, connection) {
         });
     });
 
-    router.put('/user/:id/email', function (request, response) {
+    router.put('/user/:id/email', function(request, response) {
         var uid = request.params.id;
         var usr = request.body.email;
 
@@ -95,7 +95,7 @@ User.prototype.routes = function(router, connection) {
         });
     });
 
-    router.put('/user/:id/password', function (request, response) {
+    router.put('/user/:id/password', function(request, response) {
         var uid = request.params.id;
         var psw = request.body.password;
 
@@ -116,7 +116,7 @@ User.prototype.routes = function(router, connection) {
         });
     });
 
-    router.delete('/user/:id', function (request, response) {
+    router.delete('/user/:id', function(request, response) {
         var uid = request.params.id;
 
         var query = 'DELETE from ?? WHERE ?? = ?';

@@ -41,7 +41,9 @@ APIServer.prototype.configure = function(connection) {
     var User = new model.User(router, connection);
     var Character = new model.Character(router, connection);
     var SocialStatus = new model.SocialStatus(router, connection);
-    var Module = new model.Module(router, connection);
+    var GameModule = new model.GameModule(router, connection);
+    var Manifestation = new model.Manifestation(router, connection);
+    var Species = new model.Species(router, connection);
 
     self.setup();
 };
