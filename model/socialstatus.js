@@ -1,11 +1,11 @@
 var mysql = require('mysql');
 
-function socialstatus(router, connection) {
+function SocialStatus(router, connection) {
     var self = this;
     self.routes(router, connection);
 }
 
-socialstatus.prototype.routes = function(router, connection) {
+SocialStatus.prototype.routes = function(router, connection) {
     router.get('/socialstatus', function (request, response) {
         var query = 'SELECT * FROM ??';
         var table = ['socialstatus'];
@@ -120,6 +120,6 @@ socialstatus.prototype.routes = function(router, connection) {
             }
         });
     });
-}
+};
 
-module.exports = socialstatus;
+module.exports = SocialStatus;

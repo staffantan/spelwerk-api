@@ -1,12 +1,12 @@
 var mysql = require('mysql');
 var credential = require('credential');
 
-function user(router, connection) {
+function User(router, connection) {
     var self = this;
     self.routes(router, connection);
 }
 
-user.prototype.routes = function(router, connection) {
+User.prototype.routes = function(router, connection) {
     router.get('/user', function (request, response) {
         var query = 'SELECT ??,??,??,?? FROM ??';
         var table = ['id','email','firstname','lastname','user'];
@@ -16,7 +16,7 @@ user.prototype.routes = function(router, connection) {
             if(error) {
                 response.status(400).send({error: true, message: 'error executing mysql query.', details: error});
             } else {
-                response.status(200).send({error: false, message: 'successfully found all users', users: rows})
+                response.status(200).send({error: false, message: 'success.', result: rows})
             }
         });
     });
@@ -32,7 +32,7 @@ user.prototype.routes = function(router, connection) {
             if(error) {
                 response.status(400).send({error: true, message: 'error executing mysql query.', details: error});
             } else {
-                response.status(200).send({error: false, message: 'successfully found user.', email: rows[0].email, firstname: rows[0].firstname, lastname: rows[0].lastname})
+                response.status(200).send({error: false, message: 'success.', result: {email: rows[0].email, firstname: rows[0].firstname, lastname: rows[0].lastname}})
             }
         });
     });
@@ -43,14 +43,6 @@ user.prototype.routes = function(router, connection) {
         var fnm = request.body.firstname;
         var lnm = request.body.lastname;
 
-        if(!usr) {
-            response.status(403).send({error: true, message: 'missing username credentials.'});
-        }
-
-        if(!psw) {
-            response.status(403).send({error: true, message: 'missing password credentials.'});
-        }
-
         var query = 'INSERT INTO ??(??,??,??,??) VALUES (?,?,?,?)';
         var table = ['user','email','password','firstname','lastname',usr,psw,fnm,lnm];
         query = mysql.format(query, table);
@@ -59,7 +51,7 @@ user.prototype.routes = function(router, connection) {
             if (error) {
                 response.status(500).send({error: true, message: 'error executing mysql query.', details: error});
             } else {
-                response.status(201).send({error: false, message: 'user added.', details: {username: usr, firstname: fnm, lastname: lnm}});
+                response.status(201).send({error: false, message: 'success.', result: {username: usr, firstname: fnm, lastname: lnm}});
             }
         });
     });
@@ -77,7 +69,7 @@ user.prototype.routes = function(router, connection) {
             if (error) {
                 response.status(500).send({error: true, message: 'error executing mysql query.', details: error});
             } else {
-                response.status(201).send({error: false, message: 'user names changed.', details: {firstname: fnm, lastname: lnm}});
+                response.status(201).send({error: false, message: 'success.', result: {firstname: fnm, lastname: lnm}});
             }
         });
     });
@@ -98,7 +90,7 @@ user.prototype.routes = function(router, connection) {
             if (error) {
                 response.status(500).send({error: true, message: 'error executing mysql query.', details: error});
             } else {
-                response.status(201).send({error: false, message: 'user email changed.', details: {email: usr}});
+                response.status(201).send({error: false, message: 'success.', result: {email: usr}});
             }
         });
     });
@@ -119,7 +111,7 @@ user.prototype.routes = function(router, connection) {
             if (error) {
                 response.status(500).send({error: true, message: 'error executing mysql query.', details: error});
             } else {
-                response.status(201).send({error: false, message: 'user password changed.'});
+                response.status(201).send({error: false, message: 'success.'});
             }
         });
     });
@@ -135,10 +127,10 @@ user.prototype.routes = function(router, connection) {
             if (error) {
                 response.status(500).send({error: true, message: 'error executing mysql query.', details: error});
             } else {
-                response.status(201).send({error: false, message: 'user deleted.'});
+                response.status(201).send({error: false, message: 'success.'});
             }
         });
     });
-}
+};
 
-module.exports = user;
+module.exports = User;

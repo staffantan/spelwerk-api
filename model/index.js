@@ -1,3 +1,3 @@
-exports.user = require('./user');
-exports.character = require('./character');
-exports.socialstatus = require('./socialstatus');
+exports.User = require('./user');
+exports.Character = require('./character');
+exports.SocialStatus = require('./socialstatus');

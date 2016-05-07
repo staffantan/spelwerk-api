@@ -1,11 +1,11 @@
 var mysql = require('mysql');
 
-function character(router, connection) {
+function Character(router, connection) {
     var self = this;
     self.routes(router, connection);
 }
 
-character.prototype.routes = function(router, connection) {
+Character.prototype.routes = function(router, connection) {
     router.get('/character', function (request, response) {
         response.status(501).send({error: false, message: 'not implemented yet'});
     });
@@ -25,6 +25,6 @@ character.prototype.routes = function(router, connection) {
     router.delete('/character/:id', function (request, response) {
         response.status(501).send({error: false, message: 'not implemented yet'});
     });
-}
+};
 
-module.exports = character;
+module.exports = Character;
