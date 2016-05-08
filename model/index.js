@@ -2,6 +2,7 @@ exports.Attribute = require('./attribute');
 exports.Character = require('./character');
 exports.GameModule = require('./gamemodule');
 exports.Manifestation = require('./manifestation');
+exports.Perk = require('./perk');
 exports.Person = require('./person');
 exports.SocialStatus = require('./socialstatus');
 exports.Species = require('./species');

@@ -8,7 +8,7 @@ function Attribute(router, connection) {
 Attribute.prototype.routes = function(router, connection) {
     router.get('/attribute', function(request, response) {
         var query = 'SELECT attribute.*, attribute_type.name AS type, attribute_type.maximum FROM attribute ' +
-            'LEFT JOIN attribute_type ON attribute.is_attribute_type=attribute_type.id';
+            'LEFT JOIN attribute_type ON attribute.typeid=attribute_type.id';
 
         connection.query(query, function(error, rows) {
             if(error) {
@@ -22,7 +22,7 @@ Attribute.prototype.routes = function(router, connection) {
 
     router.get('/attribute/:id', function(request, response) {
         var query = 'SELECT attribute.*, attribute_type.name AS type, attribute_type.maximum FROM attribute ' +
-            'LEFT JOIN attribute_type ON attribute.is_attribute_type=attribute_type.id ' +
+            'LEFT JOIN attribute_type ON attribute.typeid=attribute_type.id ' +
             'WHERE attribute.id = ?';
 
         var table = [request.params.id];
@@ -31,17 +31,22 @@ Attribute.prototype.routes = function(router, connection) {
             if(error) {
                 response.status(400).send({error: true, message: 'error executing mysql query.', details: error});
             }
-            if(rows[0] != null) {
-                response.status(200).send({error: false, message: 'success.', result: rows})
+            if(rows[0] == null) {
+                response.status(404).send({error: true, message: 'id not found.'});
             } else {
-                response.status(404).send({error: true, message: 'no attribute found.', details: error});
+                response.status(200).send({error: false, message: 'success.', result: rows})
             }
         });
     });
 
     router.post('/attribute', function(request, response) {
-        var query = 'INSERT INTO attribute(name,description,is_attribute_type,is_manifeattributeion) VALUES (?,?,?,?)';
-        var table = [request.body.name,request.body.description,request.body.attributetype,request.body.manifeattributeion];
+        var query = 'INSERT INTO attribute(typeid,name,description,is_manifestation) VALUES (?,?,?,?)';
+        var table = [
+            request.body.attributetype,
+            request.body.name,
+            request.body.description,
+            request.body.manifestation
+        ];
         query = mysql.format(query, table);
         connection.query(query, function(error) {
             if (error) {
@@ -91,8 +96,8 @@ Attribute.prototype.routes = function(router, connection) {
         });
     });
 
-    /** ************** **/
-    /** ATTRIBUTE TYPE **/
+      /** ************** **/
+     /** ATTRIBUTE TYPE **/
     /** ************** **/
 
     router.get('/attributetype', function(request, response) {
@@ -113,9 +118,12 @@ Attribute.prototype.routes = function(router, connection) {
         connection.query(query, function(error, rows) {
             if(error) {
                 response.status(400).send({error: true, message: 'error executing mysql query.', details: error});
+            }
+            if(rows[0] == null) {
+                response.status(404).send({error: true, message: 'id not found.'});
             } else {
                 response.status(200).send({error: false, message: 'success.', result: rows})
-            }//TODO: add if(rows[0] != null
+            }
         });
     });
 
@@ -125,7 +133,6 @@ Attribute.prototype.routes = function(router, connection) {
         query = mysql.format(query, table);
         connection.query(query, function(error) {
             if (error) {
-                console.log(error)
                 response.status(500).send({error: true, message: 'error executing mysql query.', details: error});
             } else {
                 response.status(201).send({error: false, message: 'success.'});

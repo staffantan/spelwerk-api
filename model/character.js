@@ -44,9 +44,11 @@ Character.prototype.routes = function(router, connection) {
         connection.query(query, function(error, rows) {
             if(error) {
                 response.status(400).send({error: true, message: 'error executing mysql query.', details: error});
+            }
+            if(rows[0] == null) {
+                response.status(404).send({error: true, message: 'id not found.'});
             } else {
                 response.status(200).send({error: false, message: 'success.', result: rows})
-                //TODO: We should sort the response better in result.
             }
         });
     });
