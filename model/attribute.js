@@ -7,7 +7,7 @@ function Attribute(router, connection) {
 
 Attribute.prototype.routes = function(router, connection) {
     router.get('/attribute', function(request, response) {
-        var query = 'SELECT attribute.*, attribute_type.name AS type, attribute_type.maximum FROM attribute ' +
+        var query = 'SELECT attribute.*, attribute_type.name AS typename, attribute_type.maximum FROM attribute ' +
             'LEFT JOIN attribute_type ON attribute.typeid=attribute_type.id';
 
         connection.query(query, function(error, rows) {
@@ -21,7 +21,7 @@ Attribute.prototype.routes = function(router, connection) {
     });
 
     router.get('/attribute/:id', function(request, response) {
-        var query = 'SELECT attribute.*, attribute_type.name AS type, attribute_type.maximum FROM attribute ' +
+        var query = 'SELECT attribute.*, attribute_type.name AS typename, attribute_type.maximum FROM attribute ' +
             'LEFT JOIN attribute_type ON attribute.typeid=attribute_type.id ' +
             'WHERE attribute.id = ?';
 

@@ -7,7 +7,7 @@ function Perk(router, connection) {
 
 Perk.prototype.routes = function(router, connection) {
     router.get('/perk', function(request, response) {
-        var query = 'SELECT perk.*, perk_type.name AS type FROM perk ' +
+        var query = 'SELECT perk.*, perk_type.name AS typename FROM perk ' +
             'LEFT JOIN perk_type ON perk.typeid=perk_type.id';
 
         connection.query(query, function(error, rows) {
@@ -21,7 +21,7 @@ Perk.prototype.routes = function(router, connection) {
     });
 
     router.get('/perk/:id', function(request, response) {
-        var query = 'SELECT perk.*, perk_type.name AS type FROM perk ' +
+        var query = 'SELECT perk.*, perk_type.name AS typename FROM perk ' +
             'LEFT JOIN perk_type ON perk.typeid=perk_type.id ' +
             'WHERE perk.id = ?';
 
