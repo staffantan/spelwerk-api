@@ -74,6 +74,19 @@ Character.prototype.routes = function(router, connection) {
         });
     });
 
+    router.put('/character/:id/age', function(request, response) {
+        var query = 'UPDATE tbl_character SET age = ? WHERE id = ?';
+        var table = [request.body.age,request.params.id];
+        query = mysql.format(query, table);
+        connection.query(query, function(error) {
+            if (error) {
+                response.status(500).send({error: true, message: 'error executing mysql query.', details: error});
+            } else {
+                response.status(201).send({error: false, message: 'success.'});
+            }
+        });
+    });
+
     router.put('/character/:id/nature', function(request, response) {
         var query = 'UPDATE avatar SET nature = ? WHERE id = ?';
         var table = [request.body.nature,request.params.id];
@@ -113,18 +126,7 @@ Character.prototype.routes = function(router, connection) {
         });
     });
 
-    router.put('/character/:id/age', function(request, response) {
-        var query = 'UPDATE tbl_character SET age = ? WHERE id = ?';
-        var table = [request.body.age,request.params.id];
-        query = mysql.format(query, table);
-        connection.query(query, function(error) {
-            if (error) {
-                response.status(500).send({error: true, message: 'error executing mysql query.', details: error});
-            } else {
-                response.status(201).send({error: false, message: 'success.'});
-            }
-        });
-    });
+
 
     router.put('/character/:id/socialstatus', function(request, response) {
         var query = 'UPDATE tbl_character SET is_socialstatus = ? WHERE id = ?';
@@ -195,15 +197,15 @@ Character.prototype.routes = function(router, connection) {
         });
     });
 
-    router.put('/character/:id/description', function(request, response) {
-        var query = 'UPDATE person SET description = ? WHERE id = ?';
-        var table = [request.body.description,request.params.id];
+    router.put('/character/:id/gender', function(request, response) {
+        var query = 'UPDATE person SET gender = ? WHERE id = ?';
+        var table = [request.body.gender,request.params.id];
         query = mysql.format(query, table);
         connection.query(query, function(error) {
             if (error) {
                 response.status(500).send({error: true, message: 'error executing mysql query.', details: error});
             } else {
-                response.status(201).send({error: false, message: 'success.', result: {description: dsc}});
+                response.status(201).send({error: false, message: 'success.'});
             }
         });
     });
@@ -217,6 +219,19 @@ Character.prototype.routes = function(router, connection) {
                 response.status(500).send({error: true, message: 'error executing mysql query.', details: error});
             } else {
                 response.status(201).send({error: false, message: 'success.', result: {occupation: ocu}});
+            }
+        });
+    });
+
+    router.put('/character/:id/description', function(request, response) {
+        var query = 'UPDATE person SET description = ? WHERE id = ?';
+        var table = [request.body.description,request.params.id];
+        query = mysql.format(query, table);
+        connection.query(query, function(error) {
+            if (error) {
+                response.status(500).send({error: true, message: 'error executing mysql query.', details: error});
+            } else {
+                response.status(201).send({error: false, message: 'success.', result: {description: dsc}});
             }
         });
     });

@@ -33,6 +33,7 @@ SocialStatus.prototype.routes = function(router, connection) {
         });
     });
 
+    //TODO: SOCIALSTATUS NEEDS ANOTHER REFERENCE TO THE CORRECT ATTRIBUTE
     router.post('/socialstatus', function(request, response) {
         var query = 'INSERT INTO socialstatus(name,description,finance) VALUES (?,?,?)';
         var table = [
